@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
 import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectItems } from '../../redux/contactsSelectors';
 import { addContact } from '../../redux/contactsReducer';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(selectItems);
 
   const handleContactsInputChange = event => {
     switch (event.target.name) {
@@ -32,8 +33,17 @@ export const ContactForm = () => {
     );
 
     if (hasContactDuplicate) {
-      alert(`${contactData.name} is already in contacts`);
-      return;
+      return toast.warning(`${contactData.name} is already in contacts`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        toastId: 'errorMessage',
+      });
     }
 
     dispatch(addContact(contactData));
@@ -44,8 +54,7 @@ export const ContactForm = () => {
 
     const contact = {
       name,
-      number,
-      id: nanoid(),
+      phone: number,
     };
 
     handleAddContact(contact);

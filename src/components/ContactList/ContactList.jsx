@@ -1,35 +1,37 @@
-import { ContactListItem } from 'components/ContactListItem/ContactListItem';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { deleteContact } from '../../redux/contactsReducer';
+import { useEffect } from 'react';
+import { deleteContact, fetchContacts } from '../../redux/contactsReducer';
+import { ContactListItem } from 'components/ContactListItem/ContactListItem';
+import { selectVisibleContacts } from '../../redux/contactsSelectors';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
-  const filter = useSelector(state => state.contacts.filter);
+
+  const contactsArr = useSelector(selectVisibleContacts);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const hanldeDeleteContact = contactId => {
     dispatch(deleteContact(contactId));
   };
 
-  const contactsArr = contacts.filter(contact => {
-    return contact.name.toLowerCase().includes(filter.toLowerCase());
-  });
-
   return (
     <ul>
-      {contactsArr.map(contact => {
-        const { id, name, number } = contact;
-        return (
-          <ContactListItem
-            key={id}
-            contactId={id}
-            contactName={name}
-            contactNumber={number}
-            deleteContact={hanldeDeleteContact}
-          />
-        );
-      })}
+      {contactsArr.length !== 0 &&
+        contactsArr.map(contact => {
+          const { id, name, phone } = contact;
+          return (
+            <ContactListItem
+              key={id}
+              contactId={id}
+              contactName={name}
+              contactNumber={phone}
+              deleteContact={hanldeDeleteContact}
+            />
+          );
+        })}
     </ul>
   );
 };
