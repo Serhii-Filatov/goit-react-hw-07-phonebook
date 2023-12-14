@@ -1,0 +1,24 @@
+.contactListItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  width: 350px;
+}
+
+.deleteBtn {
+  margin-left: 10px;
+  padding: 5px 30px;
+  font-size: 14px;
+
+  background-color: transparent;
+  border: solid 1px #393939;
+  border-radius: 5px;
+}
+
+.deleteBtn:hover,
+.deleteBtn:active {
+  background-color: #c8c8c8;
+  color: #828282;
+}
